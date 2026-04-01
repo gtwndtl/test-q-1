@@ -1,0 +1,83 @@
+<div class="page-container">
+    <div class="action-bar">
+        <p-button label="เพิ่มผู้ใช้งานใหม่" icon="pi pi-plus" rounded (click)="openCreateDialog()"></p-button>
+    </div>
+
+    <div>
+        <p-table [value]="users()" [lazy]="true" (onLazyLoad)="onPageChange($event)" [paginator]="true"
+            [rows]="pageSize()" [totalRecords]="totalRecords()" [rowsPerPageOptions]="[5, 10, 20]"
+            [loading]="isLoading()" [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>ID</th>
+                    <th>ชื่อ - สกุล</th>
+                    <th>ที่อยู่</th>
+                    <th>วันเกิด</th>
+                    <th>อายุ</th>
+                    <th>Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user>
+                <tr>
+                    <td>{{ user.userId }}</td>
+                    <td>{{ user.firstname }} {{ user.lastname }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.dateOfBirth | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ user.age || 0 }} ปี</td>
+                    <td>
+                        <p-button rounded (click)="openViewDialog(user.userId)">View</p-button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5" class="text-center">ไม่มีข้อมูลในการแสดงผล</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+</div>
+
+<p-dialog [modal]="true" [(visible)]="isDialogVisible" [style]="{ width: '45rem' }" [closable]="false"
+    [draggable]="false">
+    <form [formGroup]="userForm" class="form-container">
+        <div class="form-row">
+            <label class="form-label">ชื่อ - สกุล</label>
+            <div class="form-content">
+                <input pInputText type="text" formControlName="firstname" class="form-input" placeholder="กรอกชื่อ" />
+                <input pInputText type="text" formControlName="lastname" class="form-input" placeholder="กรอกนามสกุล" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label class="form-label">วันเกิด</label>
+            <div class="form-content">
+                <p-datepicker appendTo="body" formControlName="dateOfBirth" [showIcon]="true" styleClass="w-full"
+                    class="form-input" dateFormat="dd/mm/yy" placeholder="คลิกเพื่อเลือกวันที่"></p-datepicker>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label class="form-label">อายุ</label>
+            <div class="form-content">
+                <span class="text-bold">{{ userForm.value.age || 0 }} ปี</span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label class="form-label">ที่อยู่</label>
+            <div class="form-content">
+                <textarea pTextarea rows="4" formControlName="address" class="form-input" style="resize: none;"
+                    placeholder="ระบุที่อยู่ปัจจุบัน"></textarea>
+            </div>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button *ngIf="!isViewMode" label="บันทึกข้อมูล" (click)="onSaveForm()"
+            [disabled]="userForm.invalid"></p-button>
+        <p-button [label]="isViewMode ? 'ปิด' : 'ยกเลิก'" severity="danger" (click)="closeDialog()"></p-button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,26 @@
+@import "primeicons/primeicons.css";
+
+@font-face {
+  font-family: IBMPlexSansThai;
+  src: url(/assets/fonts/IBMPlexSans/IBMPlexSansThai-Regular.ttf);
+  font-weight: 400;
+}
+@font-face {
+  font-family: IBMPlexSansThai;
+  src: url(/assets/fonts/IBMPlexSans/IBMPlexSansThai-Medium.ttf);
+  font-weight: 500;
+}
+@font-face {
+  font-family: IBMPlexSansThai;
+  src: url(/assets/fonts/IBMPlexSans/IBMPlexSansThai-Bold.ttf);
+  font-weight: 700;
+}
+
+*:not(.pi) {
+  font-family: IBMPlexSansThai;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
